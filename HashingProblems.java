@@ -41,7 +41,22 @@ class HashingProblems {
          * returning 0.0/0.0 IS correct (which would return a non-number).
          */
 
-         return 0.0 / 0.0;
+        double sum = 0;
+        int count = 0;
+
+        for (int num : array) {
+            if (map.containsKey(num)) {
+                sum += map.get(num);
+                count++;
+            }
+        }
+
+        // If no common keys were found, return NaN (0.0/0.0)
+        if (count == 0) {
+            return Double.NaN;
+        }
+
+        return sum / count;
   }
 
 
@@ -61,6 +76,13 @@ class HashingProblems {
        *
        * Hint: Consider iterating over the HashMap using the keySet method.
        */
+
+
+      for (Integer key : map.keySet()) {
+          if (key % 2 != 0) {
+              result.add(map.get(key));
+          }
+      }
 
 
       return result;
@@ -110,7 +132,21 @@ class HashingProblems {
        * ADD YOUR CODE HERE
        */
 
-      return -1;
+      Set<Integer> set = new HashSet<>();
+      int count = 0;
+
+      for (int num : numbers) {
+          if (set.contains(num - k)) {
+              count++;
+          }
+          if (set.contains(num + k)) {
+              count++;
+          }
+          set.add(num);
+      }
+
+      return count;
+
   }
 
 } /* end class HashingProblems */

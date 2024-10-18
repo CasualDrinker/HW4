@@ -230,6 +230,25 @@ class myHashMap<K,V> {
          * the return value discussion in this method's prologue to make sure the correct
          * return value is returned the invoking function based on the remove outcome.
          */
+        int index = getBucketIndex(key);
+        HashNode<K, V> head = bucket.get(index);
+        HashNode<K, V> prev = null;
+
+        // Traverse the list at this bucket
+        while (head != null) {
+            if (head.key.equals(key)) {
+                if (prev != null) {
+                    prev.next = head.next;
+                } else {
+                    bucket.set(index, head.next);
+                }
+                size--;
+                return head.value;
+            }
+            prev = head;
+            head = head.next;
+        }
+
 
         return null;
     }
@@ -405,6 +424,18 @@ class myHashMap<K,V> {
          * Make sure you return the proper value based on the outcome of this method's
          * replace (see method's prologue above).
          */
+        int index = getBucketIndex(key);
+        HashNode<K, V> head = bucket.get(index);
+
+        while (head != null) {
+            if (head.key.equals(key)) {
+                V oldValue = head.value;
+                head.value = val;
+                return oldValue;
+            }
+            head = head.next;
+        }
+
 
         return val;
     }
@@ -425,29 +456,37 @@ class myHashMap<K,V> {
      *               else null if not found.
      */
 
-    public boolean replace(K key, V oldVal, V newVal) {
 
-        /*
-         * ADD YOUR CODE HERE
+        public boolean replace(K key, V oldVal, V newVal) {
+
+            int index = getBucketIndex(key);
+            HashNode<K, V> head = bucket.get(index);
+
+
+            while (head != null) {
+
+                if (head.key.equals(key) && head.value.equals(oldVal)) {
+                    head.value = newVal;
+                    return true;
+                }
+                head = head.next;
+            }
+
+            return false;
+        }
+
+
+
+        /**
+         * Method: boolean contains(V)
          *
-         * This method should apply the precondition (aka, the Key already exists with the
-         * value 'oldval', and is so, it SHOULD call replace(K, V) for code reuse.
+         * Returns true if this map maps one or more keys to the specified value
+         *
+         * @param val: Value to search for in hashmap to determine
+         *             if it is contained there.
+         *
+         * @return: true if found, else false.
          */
-
-        return false;
-    }
-
-
-    /**
-     * Method: boolean contains(V)
-     *
-     * Returns true if this map maps one or more keys to the specified value
-     *
-     * @param val: Value to search for in hashmap to determine 
-     *             if it is contained there.
-     *
-     * @return: true if found, else false.
-     */
 
     public boolean containsValue(V val) {
 
